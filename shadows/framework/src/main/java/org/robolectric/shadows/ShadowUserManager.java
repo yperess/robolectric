@@ -180,6 +180,15 @@ public class ShadowUserManager {
     return state == UserState.STATE_RUNNING_UNLOCKED;
   }
 
+  /** @see #setUserState(UserHandle, UserState) */
+  @Implementation(minSdk = 24)
+  protected boolean isUserUnlockingOrUnlocked(UserHandle handle) {
+    checkPermissions();
+    UserState state = userState.get(handle.getIdentifier());
+
+    return state == UserState.STATE_RUNNING_UNLOCKED || state == UserState.STATE_RUNNING_UNLOCKING;
+  }
+
   /**
    * If permissions are enforced (see {@link #enforcePermissionChecks(boolean)}) and the application
    * doesn't have the {@link android.Manifest.permission#MANAGE_USERS} permission, throws a
